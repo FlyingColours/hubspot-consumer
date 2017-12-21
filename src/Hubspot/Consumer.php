@@ -44,6 +44,8 @@ class Consumer
             ->get(sprintf('%s/contacts/v1/contact/vid/%s/profile', $this->apiUrl, $id))
         ;
 
+        print_r($response);
+
         $event = new GenericEvent(new Contact(), [ 'response' => $response ]);
 
         $this->dispatcher->dispatch(__METHOD__, $event);

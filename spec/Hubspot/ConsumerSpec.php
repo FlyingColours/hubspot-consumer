@@ -34,6 +34,6 @@ class ConsumerSpec extends ObjectBehavior
     {
         $browser->post(Argument::any(), null, Argument::any())->shouldBeCalled();
 
-        $this->createContact($payload = ['email' => 'doctor@tardis']);
+        $this->createContact($payload = [ 'email' => 'doctor@tardis' ]);
     }
 }
