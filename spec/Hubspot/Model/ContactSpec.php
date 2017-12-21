@@ -25,9 +25,17 @@ class ContactSpec extends ObjectBehavior
         $this->getProperties()->shouldHaveCount(0);
         $this->setProperties([['firstName' => 'Doctor']])->shouldReturn($this);
         $this->getProperties()->shouldHaveCount(1);
-        $this->addProperty('lastName', 'Who')->shouldReturn($this);
+        $this->setProperty('lastName', 'Who')->shouldReturn($this);
         $this->getProperties()->shouldHaveCount(2);
         $this->removeProperty('lastName')->shouldReturn($this);
         $this->getProperties()->shouldHaveCount(1);
+    }
+
+    function it_can_set_email_although_it_is_a_just_another_property_aka_alias()
+    {
+        $this->setProperty('email', 'doctor@tardis')->shouldReturn($this);
+        $this->getEmail()->shouldReturn('doctor@tardis');
+        $this->setEmail('doctor@tardis.local')->shouldReturn($this);
+        $this->getProperty('email')->shouldReturn('doctor@tardis.local');
     }
 }

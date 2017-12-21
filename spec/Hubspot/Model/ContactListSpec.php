@@ -19,4 +19,18 @@ class ContactListSpec extends ObjectBehavior
         $this->setId('123232')->shouldReturn($this);
         $this->getId()->shouldNotReturn(null);
     }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn(null);
+        $this->setName('Unqualified Leads')->shouldReturn($this);
+        $this->getName()->shouldNotReturn(null);
+    }
+
+    function it_knows_if_it_is_dynamic()
+    {
+        $this->isDynamic()->shouldReturn(true);
+        $this->setDynamic(false)->shouldReturn($this);
+        $this->isDynamic()->shouldReturn(false);
+    }
 }

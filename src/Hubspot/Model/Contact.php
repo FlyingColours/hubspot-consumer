@@ -35,11 +35,16 @@ class Contact
     }
 
 
-    public function addProperty(string $name, string $value)
+    public function setProperty(string $name, string $value)
     {
         $this->properties[$name] = $value;
 
         return $this;
+    }
+
+    public function getProperty(string $name)
+    {
+        return $this->properties[$name];
     }
 
     public function removeProperty(string $name)
@@ -49,4 +54,15 @@ class Contact
         return $this;
     }
 
+    public function getEmail()
+    {
+        return $this->properties['email'] ?? null;
+    }
+
+    public function setEmail(string $value)
+    {
+        $this->properties['email'] = $value;
+
+        return $this;
+    }
 }
