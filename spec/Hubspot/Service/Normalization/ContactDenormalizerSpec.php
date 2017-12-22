@@ -40,4 +40,10 @@ class ContactDenormalizerSpec extends ObjectBehavior
             )
             ->shouldReturn($contact);
     }
+
+    function it_can_workout_if_it_supportsDenormalization()
+    {
+        $this->supportsDenormalization([], Argument::any())->shouldReturn(false);
+        $this->supportsDenormalization(['properties' => [], 'vid' => '1'], Argument::any())->shouldReturn(true);
+    }
 }

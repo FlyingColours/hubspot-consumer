@@ -51,10 +51,21 @@ class Consumer
         return $event->getSubject();
     }
 
-    public function createContact(array $payload)
+    /**
+     * @param array|Contact $payload
+     *
+     * @return Contact
+     */
+    public function createContact($payload)
     {
-        $this->browser
-            ->post(sprintf('%s/contacts/v1/contact/', $this->apiUrl), null, $payload)
+        $response = $this->browser
+            ->post(sprintf('%s/contacts/v1/contact/', $this->apiUrl), [], $payload)
         ;
+
+        $event = new GenericEvent(new Contact(), [ 'response' => $response ]);
+
+        $this->dispatcher->dispatch(__METHOD__, $event);
+
+        return $event->getSubject();
     }
 }

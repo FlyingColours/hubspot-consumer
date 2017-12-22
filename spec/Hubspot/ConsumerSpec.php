@@ -32,7 +32,7 @@ class ConsumerSpec extends ObjectBehavior
 
     function it_can_create_contact_on_Hubspot(Browser $browser)
     {
-        $browser->post(Argument::any(), null, Argument::any())->shouldBeCalled();
+        $browser->post(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
 
         $this->createContact($payload = [ 'email' => 'doctor@tardis' ]);
     }

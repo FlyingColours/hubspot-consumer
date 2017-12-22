@@ -30,4 +30,9 @@ class ContactSerializationSubscriberSpec extends ObjectBehavior
 
         $this->onGetContactById($event);
     }
+
+    function it_is_not_so_hard_to_test_static_methods()
+    {
+        $this->getSubscribedEvents()->shouldNotReturn(null);
+    }
 }
