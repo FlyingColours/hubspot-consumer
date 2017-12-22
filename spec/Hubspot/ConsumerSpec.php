@@ -30,6 +30,15 @@ class ConsumerSpec extends ObjectBehavior
         $this->getContactById($id = '1234')->shouldReturnAnInstanceOf(Contact::class);
     }
 
+    function it_can_contact_by_email(EventDispatcherInterface $dispatcher, Browser $browser)
+    {
+        $browser->get(Argument::any())->shouldBeCalled();
+
+        $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
+
+        $this->getContactByEmail($email = 'doctor@tardis')->shouldReturnAnInstanceOf(Contact::class);
+    }
+
     function it_can_create_contact_on_Hubspot(Browser $browser)
     {
         $browser->post(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();

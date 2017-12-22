@@ -51,6 +51,19 @@ class Consumer
         return $event->getSubject();
     }
 
+    public function getContactByEmail($email)
+    {
+        $response = $this->browser
+            ->get(sprintf('%s/contacts/v1/contact/email/%s/profile', $this->apiUrl, $email))
+        ;
+
+        $event = new GenericEvent(new Contact(), [ 'response' => $response ]);
+
+        $this->dispatcher->dispatch(__METHOD__, $event);
+
+        return $event->getSubject();
+    }
+
     /**
      * @param array|Contact $payload
      *

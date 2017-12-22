@@ -25,6 +25,7 @@ class ContactSerializationSubscriber implements EventSubscriberInterface
     {
         return [
             'Hubspot\Consumer::getContactById' => [ 'onGetContactById' ],
+            'Hubspot\Consumer::getContactByEmail' => [ 'onGetContactById' ],
             'Hubspot\Consumer::createContact' => [ 'onGetContactById' ]
         ];
     }
