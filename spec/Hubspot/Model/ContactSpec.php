@@ -22,13 +22,11 @@ class ContactSpec extends ObjectBehavior
 
     function it_has_properties()
     {
-        $this->getProperties()->shouldHaveCount(0);
-        $this->setProperties([['firstName' => 'Doctor']])->shouldReturn($this);
-        $this->getProperties()->shouldHaveCount(1);
+        $this->getArrayCopy()->shouldHaveCount(0);
         $this->setProperty('lastName', 'Who')->shouldReturn($this);
-        $this->getProperties()->shouldHaveCount(2);
+        $this->getArrayCopy()->shouldHaveCount(1);
         $this->removeProperty('lastName')->shouldReturn($this);
-        $this->getProperties()->shouldHaveCount(1);
+        $this->getArrayCopy()->shouldHaveCount(0);
     }
 
     function it_can_set_email_although_it_is_a_just_another_property_aka_alias()
@@ -37,5 +35,11 @@ class ContactSpec extends ObjectBehavior
         $this->getEmail()->shouldReturn('doctor@tardis');
         $this->setEmail('doctor@tardis.local')->shouldReturn($this);
         $this->getProperty('email')->shouldReturn('doctor@tardis.local');
+    }
+
+    function it_implements_ArrayAccess_for_properties()
+    {
+        $this->setProperty('email', 'doctor@tardis')->shouldReturn($this);
+        $this->offsetGet('email')->shouldReturn('doctor@tardis');
     }
 }

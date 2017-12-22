@@ -2,13 +2,13 @@
 
 namespace Hubspot\Model;
 
-class Contact
+use ArrayObject;
+
+class Contact extends ArrayObject
 {
     /** @var string */
     protected $id;
 
-    /** @var array */
-    protected $properties = [];
 
     public function getId(): ?string
     {
@@ -22,46 +22,33 @@ class Contact
         return $this;
     }
 
-    public function getProperties(): ?array
-    {
-        return $this->properties;
-    }
-
-    public function setProperties(?array $properties)
-    {
-        $this->properties = $properties;
-
-        return $this;
-    }
-
-
     public function setProperty(string $name, string $value)
     {
-        $this->properties[$name] = $value;
+        $this->offsetSet($name, $value);
 
         return $this;
     }
 
     public function getProperty(string $name)
     {
-        return $this->properties[$name];
+        return $this->offsetGet($name);
     }
 
     public function removeProperty(string $name)
     {
-        unset($this->properties[$name]);
+        $this->offsetUnset($name);
 
         return $this;
     }
 
     public function getEmail()
     {
-        return $this->properties['email'] ?? null;
+        return $this->offsetGet('email');
     }
 
     public function setEmail(string $value)
     {
-        $this->properties['email'] = $value;
+        $this->offsetSet('email', $value);
 
         return $this;
     }

@@ -3,9 +3,9 @@
 namespace Hubspot;
 
 use Buzz\Browser;
-use Hubspot\Model\Contact;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Hubspot\Model\Contact;
 
 class Consumer
 {
@@ -43,8 +43,6 @@ class Consumer
         $response = $this->browser
             ->get(sprintf('%s/contacts/v1/contact/vid/%s/profile', $this->apiUrl, $id))
         ;
-
-        print_r($response);
 
         $event = new GenericEvent(new Contact(), [ 'response' => $response ]);
 
