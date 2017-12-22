@@ -25,7 +25,7 @@ class HapiListener implements ListenerInterface
     {
         parse_str(parse_url($request->getResource(), PHP_URL_QUERY), $query);
 
-        $query['hapi'] = $this->hapi;
+        $query['hapikey'] = $this->hapi;
 
         $request->setResource(
             sprintf('%s?%s',

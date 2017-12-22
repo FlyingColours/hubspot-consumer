@@ -7,7 +7,6 @@ use Buzz\Message\Request;
 use Buzz\Message\Response;
 use Hubspot\Listener\HapiListener;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class HapiListenerSpec extends ObjectBehavior
 {
@@ -30,7 +29,7 @@ class HapiListenerSpec extends ObjectBehavior
     function it_preSend_appends_hapi_key_to_the_query_parameters(Request $request)
     {
         $request->getResource()->willReturn('http://localhost/hello?test=1');
-        $request->setResource('http://localhost/hello?test=1&hapi=1234')->shouldBeCalled();
+        $request->setResource('http://localhost/hello?test=1&hapikey=1234')->shouldBeCalled();
         $this->preSend($request);
     }
 }
