@@ -16,9 +16,9 @@ class ContactNormalizerSpec extends ObjectBehavior
 
     function it_can_workout_if_it_supportsNormalization(Contact $contact)
     {
-        $this->supportsNormalization([])->shouldReturn(true);
         $this->supportsNormalization($contact)->shouldReturn(true);
 
+        $this->supportsNormalization([])->shouldReturn(false);
         $this->supportsNormalization(new \stdClass())->shouldReturn(false);
     }
 

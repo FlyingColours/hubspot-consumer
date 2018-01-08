@@ -13,7 +13,7 @@ class ContactNormalizer implements NormalizerInterface
 
         foreach($object as $property => $value)
         {
-            $normalized['properties'][] = ['property' => $property, 'value' => $value ];
+            $normalized['properties'][] = [ 'property' => $property, 'value' => $value ];
         }
 
         return $normalized;
@@ -21,6 +21,6 @@ class ContactNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Contact || is_array($data);
+        return $data instanceof Contact;
     }
 }
