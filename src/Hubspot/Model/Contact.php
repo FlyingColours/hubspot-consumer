@@ -22,7 +22,7 @@ class Contact extends ArrayObject
         return $this;
     }
 
-    public function setProperty(string $name, string $value)
+    public function setProperty(string $name, ?string $value)
     {
         $this->offsetSet($name, $value);
 
