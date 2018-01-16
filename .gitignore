@@ -1,2 +1,5 @@
 /vendor/
+/bin/
+/build/
 composer.lock
+local.example.php

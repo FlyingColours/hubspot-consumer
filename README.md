@@ -6,4 +6,11 @@
 
 ## Installation
 
+```bash
+composer require flyingcolours/hubspot-consumer
+```
+
 ## Usage
+
+See [example.php](example.php)
+
