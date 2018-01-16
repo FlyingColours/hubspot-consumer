@@ -43,7 +43,10 @@ class Contact extends ArrayObject
 
     public function getEmail()
     {
-        return $this->offsetGet('email');
+        return $this->offsetExists('email')
+            ? $this->offsetGet('email')
+            : null
+        ;
     }
 
     public function setEmail(string $value)

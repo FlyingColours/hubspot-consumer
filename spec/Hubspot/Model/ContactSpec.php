@@ -31,6 +31,7 @@ class ContactSpec extends ObjectBehavior
 
     function it_can_set_email_although_it_is_a_just_another_property_aka_alias()
     {
+        $this->getEmail()->shouldReturn(null);
         $this->setProperty('email', 'doctor@tardis')->shouldReturn($this);
         $this->getEmail()->shouldReturn('doctor@tardis');
         $this->setEmail('doctor@tardis.local')->shouldReturn($this);
