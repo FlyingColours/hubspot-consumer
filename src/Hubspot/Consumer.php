@@ -81,4 +81,11 @@ class Consumer
 
         return $event->getSubject();
     }
+
+    public function updateContact($emailAddress, $payload)
+    {
+        $this->browser
+            ->post(sprintf('%s/contacts/v1/contact/email/%s/profile', $this->apiUrl, $emailAddress), [], $payload)
+        ;
+    }
 }
