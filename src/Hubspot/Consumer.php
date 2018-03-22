@@ -34,11 +34,9 @@ class Consumer
 
     /**
      * @param string $id
-     *
-     * @return Contact
-     * @see https://developers.hubspot.com/docs/methods/contacts/get_contact
+     * @return Contact|null
      */
-    public function getContactById(string $id): Contact
+    public function getContactById(string $id): ?Contact
     {
         $response = $this->browser
             ->get(sprintf('%s/contacts/v1/contact/vid/%s/profile', $this->apiUrl, $id))
@@ -48,7 +46,7 @@ class Consumer
 
         $this->dispatcher->dispatch(__METHOD__, $event);
 
-        return $event->getSubject();
+        return $event->getSubject()->getEmail() ? $event->getSubject() : null;
     }
 
     public function getContactByEmail($email)

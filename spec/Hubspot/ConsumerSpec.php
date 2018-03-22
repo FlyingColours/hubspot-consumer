@@ -3,6 +3,7 @@
 namespace spec\Hubspot;
 
 use Buzz\Browser;
+use Buzz\Message\Response;
 use Hubspot\Consumer;
 use Hubspot\Model\Contact;
 use PhpSpec\ObjectBehavior;
@@ -21,13 +22,14 @@ class ConsumerSpec extends ObjectBehavior
         $this->shouldHaveType(Consumer::class);
     }
 
-    function it_can_contact_by_id(EventDispatcherInterface $dispatcher, Browser $browser)
+    function it_can_contact_by_id_and_return_null_if_not_found(EventDispatcherInterface $dispatcher, Browser $browser, Response $response)
     {
-        $browser->get(Argument::any())->shouldBeCalled();
+        $response->getContent()->willReturn('{"status": "error"}');
+        $browser->get(Argument::any())->willReturn($response);
 
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
-        $this->getContactById($id = '1234')->shouldReturnAnInstanceOf(Contact::class);
+        $this->getContactById($id = '1234')->shouldReturn(null);
     }
 
     function it_can_contact_by_email(EventDispatcherInterface $dispatcher, Browser $browser)
