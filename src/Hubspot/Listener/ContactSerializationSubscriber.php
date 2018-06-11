@@ -26,7 +26,8 @@ class ContactSerializationSubscriber implements EventSubscriberInterface
         return [
             'Hubspot\Consumer::getContactById' => [ 'onGetContactById' ],
             'Hubspot\Consumer::getContactByEmail' => [ 'onGetContactById' ],
-            'Hubspot\Consumer::createContact' => [ 'onGetContactById' ]
+            'Hubspot\Consumer::createContact' => [ 'onGetContactById' ],
+            'Hubspot\Consumer::getContacts' => [ 'onGetContacts' ]
         ];
     }
 
@@ -34,7 +35,23 @@ class ContactSerializationSubscriber implements EventSubscriberInterface
     {
         $payload = $event->getArgument('response')->getContent();
         $contact = $event->getSubject();
-
         $this->serializer->deserialize($payload, get_class($contact), 'json', [ 'object_to_populate' => $contact ]);
+    }
+
+    public function onGetContacts(GenericEvent $event)
+    {
+        $payload = $event->getArgument('response')->getContent();
+        $subject = $event->getSubject();
+
+        $contactsArr = json_decode($payload, true)['contacts'];
+        $contacts = $this->serializer->deserialize(
+            json_encode($contactsArr),
+            'Hubspot\Model\Contact[]',
+            'json'
+        );
+
+        foreach ($contacts as $c) {
+            $subject->append($c);
+        }
     }
 }

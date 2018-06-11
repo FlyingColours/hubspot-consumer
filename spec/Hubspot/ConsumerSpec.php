@@ -22,6 +22,13 @@ class ConsumerSpec extends ObjectBehavior
         $this->shouldHaveType(Consumer::class);
     }
 
+    function it_can_get_contacts(EventDispatcherInterface $dispatcher, Browser $browser)
+    {
+        $browser->get(Argument::exact('http://localhost:8080/contacts/v1/lists/all/contacts/all?property=email&property=sms'))->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
+        $this->getContacts(['email', 'sms']);
+    }
+
     function it_can_contact_by_id_and_return_null_if_not_found(EventDispatcherInterface $dispatcher, Browser $browser, Response $response)
     {
         $response->getContent()->willReturn('{"status": "error"}');

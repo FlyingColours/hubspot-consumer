@@ -33,6 +33,29 @@ class Consumer
     }
 
     /**
+     * @todo need to fetch next
+     * @param array $properties The properties to propagate for each contact
+     * @return mixed
+     */
+    public function getContacts(array $properties = []): \ArrayObject
+    {
+        $url = sprintf(
+            '%s/contacts/v1/lists/all/contacts/all%s',
+            $this->apiUrl,
+            (count($properties) ? '?property=' : ''). implode($properties, '&property=')
+        );
+
+        $response = $this->browser->get($url);
+
+        $contacts = new \ArrayObject();
+        $event = new GenericEvent($contacts, [ 'response' => $response ]);
+
+        $this->dispatcher->dispatch(__METHOD__, $event);
+
+        return $event->getSubject();
+    }
+
+    /**
      * @param string $id
      * @return Contact|null
      */

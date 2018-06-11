@@ -15,6 +15,7 @@ use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -29,7 +30,7 @@ $browser->addListener(new LoggerListener(function($message) use ($logger) { $log
 $browser->addListener(new HapiListener($hapiKey));
 $browser->addListener(new ErrorListener());
 
-$serializer = new Serializer([ new ContactDenormalizer(), new ContactNormalizer() ], [ new JsonEncoder() ]);
+$serializer = new Serializer([ new ArrayDenormalizer(), new ContactDenormalizer(), new ContactNormalizer() ], [ new JsonEncoder() ]);
 
 $browser->addListener(new ContactSerializationListener($serializer));
 
@@ -56,6 +57,9 @@ try {
     {
         printf("%s: %s\n", $key, $value);
     }
+
+//    $contacts = $consumer->getContacts(['email', 'sms', 'post', 'e_mail', 'telephone']);
+//    print_r($contacts);
 
 } catch (HttpException $e) {
     printf("error: %s %s\n", $e->getStatusCode(), $e->getMessage());

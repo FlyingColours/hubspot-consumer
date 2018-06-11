@@ -32,4 +32,11 @@ class HapiListenerSpec extends ObjectBehavior
         $request->setResource('http://localhost/hello?test=1&hapikey=1234')->shouldBeCalled();
         $this->preSend($request);
     }
+
+    function it_keeps_duplicate_query_parameters_on_preSend(Request $request)
+    {
+        $request->getResource()->willReturn('http://localhost/hello?test=foo&test=bar');
+        $request->setResource('http://localhost/hello?test=foo&test=bar&hapikey=1234')->shouldBeCalled();
+        $this->preSend($request);
+    }
 }

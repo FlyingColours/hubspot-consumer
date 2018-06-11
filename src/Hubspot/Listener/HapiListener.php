@@ -23,15 +23,11 @@ class HapiListener implements ListenerInterface
 
     public function preSend(RequestInterface $request)
     {
-        parse_str(parse_url($request->getResource(), PHP_URL_QUERY), $query);
-
-        $query['hapikey'] = $this->hapi;
-
-        $request->setResource(
-            sprintf('%s?%s',
-                preg_replace('/\?.*/', '', $request->getResource()),
-                http_build_query($query)
-            )
+        $request->setResource(sprintf(
+                '%s%s%s',
+                $request->getResource(),
+                parse_url($request->getResource(), PHP_URL_QUERY) ? '&' : '?',
+                sprintf('hapikey=%s', $this->hapi))
         );
     }
 
