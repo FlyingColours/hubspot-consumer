@@ -43,15 +43,20 @@ class ContactSerializationSubscriber implements EventSubscriberInterface
         $payload = $event->getArgument('response')->getContent();
         $subject = $event->getSubject();
 
-        $contactsArr = json_decode($payload, true)['contacts'];
+        $response = json_decode($payload, true);
+
+        $contactsArr = $response['contacts'];
+
         $contacts = $this->serializer->deserialize(
             json_encode($contactsArr),
             'Hubspot\Model\Contact[]',
             'json'
         );
 
+        $subject['has_more'] = $response['has-more'];
+        $subject['vid_offset'] = $response['vid-offset'];
         foreach ($contacts as $c) {
-            $subject->append($c);
+            $subject['contacts'][] = $c;
         }
     }
 }

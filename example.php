@@ -41,16 +41,16 @@ $consumer = new Consumer($dispatcher, $browser, 'https://api.hubapi.com');
 
 try {
 
-//    $contact = $consumer->getContactById('numeric id');
+    $contact = $consumer->getContactById('numeric id');
 
 //    $contact = $consumer->getContactByEmail('email@address');
 
-    $contact = $consumer->createContact([
-        'email' => 'amy.pond@example.com',
-        'firstName' => 'Amy',
-        'lastName' => 'Pond'
-    ]);
-
+//    $contact = $consumer->createContact([
+//        'email' => 'amy.pond@example.com',
+//        'firstName' => 'Amy',
+//        'lastName' => 'Pond'
+//    ]);
+//
     printf("%s: %s\n", 'ID', $contact->getId());
 
     foreach ($contact as $key => $value)
@@ -60,6 +60,11 @@ try {
 
 //    $contacts = $consumer->getContacts(['email', 'sms', 'post', 'e_mail', 'telephone']);
 //    print_r($contacts);
+
+//      $iterable = $consumer->getAllContacts(['email', 'sms', 'post', 'e_mail', 'telephone']);
+//      foreach ($iterable as $k => $contact) {
+//          echo $k . ' => ' . $contact->getEmail() . PHP_EOL;
+//      }
 
 } catch (HttpException $e) {
     printf("error: %s %s\n", $e->getStatusCode(), $e->getMessage());

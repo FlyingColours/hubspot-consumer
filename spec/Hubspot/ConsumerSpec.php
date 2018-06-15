@@ -8,6 +8,7 @@ use Hubspot\Consumer;
 use Hubspot\Model\Contact;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Hubspot\Iterator\ContactIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ConsumerSpec extends ObjectBehavior
@@ -22,11 +23,18 @@ class ConsumerSpec extends ObjectBehavior
         $this->shouldHaveType(Consumer::class);
     }
 
+    function it_can_get_all_contacts(EventDispatcherInterface $dispatcher, Browser $browser)
+    {
+        $this->getAllContacts(['email', 'sms'])->shouldReturnAnInstanceOf(ContactIterator::class);
+    }
+
     function it_can_get_contacts(EventDispatcherInterface $dispatcher, Browser $browser)
     {
-        $browser->get(Argument::exact('http://localhost:8080/contacts/v1/lists/all/contacts/all?property=email&property=sms'))->shouldBeCalled();
-        $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
-        $this->getContacts(['email', 'sms']);
+        $browser->get(
+            Argument::exact('http://localhost:8080/contacts/v1/lists/all/contacts/all?property=email&property=sms&vidOffset=123')
+        )->willReturn('{"has_more": true}');
+
+        $this->getContacts(['email', 'sms'], ['vidOffset' => 123])->shouldReturnAnInstanceOf(\ArrayObject::class);
     }
 
     function it_can_contact_by_id_and_return_null_if_not_found(EventDispatcherInterface $dispatcher, Browser $browser, Response $response)
