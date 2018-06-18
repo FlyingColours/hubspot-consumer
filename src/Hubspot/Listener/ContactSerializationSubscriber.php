@@ -41,8 +41,8 @@ class ContactSerializationSubscriber implements EventSubscriberInterface
     public function onGetContacts(GenericEvent $event)
     {
         $payload = $event->getArgument('response')->getContent();
+        /* @var $subject \ArrayObject */
         $subject = $event->getSubject();
-
         $response = json_decode($payload, true);
 
         $contactsArr = $response['contacts'];
@@ -53,10 +53,8 @@ class ContactSerializationSubscriber implements EventSubscriberInterface
             'json'
         );
 
-        $subject['has_more'] = $response['has-more'];
-        $subject['vid_offset'] = $response['vid-offset'];
-        foreach ($contacts as $c) {
-            $subject['contacts'][] = $c;
-        }
+        $subject->offsetSet('contacts', $contacts);
+        $subject->offsetSet('has_more', $response['has-more']);
+        $subject->offsetSet('vid_offset', $response['vid-offset']);
     }
 }
