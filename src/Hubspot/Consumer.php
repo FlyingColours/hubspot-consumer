@@ -6,6 +6,7 @@ use Buzz\Browser;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Hubspot\Model\Contact;
+use Hubspot\Iterator\ContactIterator;
 
 class Consumer
 {
@@ -30,6 +31,45 @@ class Consumer
         $this->dispatcher = $dispatcher;
         $this->browser = $browser;
         $this->apiUrl = $apiUrl;
+    }
+
+    /**
+     * Returns iterable of all contacts
+     * @param array $properties
+     * @return ContactIterator
+     */
+    public function getAllContacts(array $properties = []): ContactIterator
+    {
+        return new ContactIterator(
+            $this, $properties
+        );
+    }
+
+    /**
+     * Gets a page of contacts. @see self::getAllContacts() to get all contacts
+     * @param array $properties Properties to populate the Contact object with
+     * @param array $args
+     * @return array['contacts', 'vid_offset', 'has_more']
+     */
+    public function getContacts(array $properties = [], $args = []): \ArrayObject
+    {
+        $url = sprintf(
+            '%s/contacts/v1/lists/all/contacts/all%s',
+            $this->apiUrl,
+            ($properties ? '?property=' : ''). implode($properties, '&property=')
+        );
+
+        if ($args) {
+            $url .= (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . http_build_query($args);
+        }
+
+        $response = $this->browser->get($url);
+
+        $event = new GenericEvent(new \ArrayObject(), [ 'response' => $response ]);
+
+        $this->dispatcher->dispatch(__METHOD__, $event);
+
+        return $event->getSubject();
     }
 
     /**
