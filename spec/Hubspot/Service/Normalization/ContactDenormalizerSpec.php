@@ -41,6 +41,25 @@ class ContactDenormalizerSpec extends ObjectBehavior
             ->shouldReturn($contact);
     }
 
+    function it_can_denormalize_string_values_to_boolean(Contact $contact)
+    {
+        $contact->setProperty('sms', true)->shouldBeCalled();
+        $contact->setProperty('e_mail', false)->shouldBeCalled();
+        $contact->setId(Argument::any())->shouldBeCalled();
+
+        $this
+            ->denormalize(
+                $payload = [ 'vid' => 1, 'properties' => [
+                    'sms' => ['value' => 'true'],
+                    'e_mail' => ['value' => 'false'],
+                ]],
+                Contact::class,
+                null,
+                [ 'object_to_populate' => $contact]
+            )
+            ->shouldReturn($contact);
+    }
+
     function it_supportsDenormalization_for_one_contact()
     {
         $this->supportsDenormalization(['properties' => [], 'vid' => '1'], Argument::any())->shouldReturn(true);
